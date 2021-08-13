@@ -21,6 +21,49 @@ void process_image_callback(const sensor_msgs::Image img)
     // Then, identify if this pixel falls in the left, mid, or right side of the image
     // Depending on the white ball position, call the drive_bot function and pass velocities to it
     // Request a stop when there's no white ball seen by the camera
+    unsigned int row_full = img.step * img.height;
+    unsigned int col_full = img.step * img.width;
+
+    unsigned int col = 0;
+
+    for (unsigned int row = 0; row < row_full; ++row) {
+      for ( ; col < col_full;  ++col) {
+	int idx =  row * row_full + col;
+	if (img.data[idx] == white_pixel) {
+	  break;
+	}
+      }
+    }
+
+    ball_chaser::DriveToTarget srv;
+
+    float while_straight_speed = 0.5;
+    float while_turning_speed = 0.3;
+    float steer_radps = .3;
+
+    float commanded_speed, commanded_steer = 0;
+
+    if ( col / col_full < col_full / 3 ) {
+      //left
+      commanded_speed = while_turning_speed;
+      commanded_steer = -steer_radps;
+
+    } else if ( (col / col_full) < ( 2 * col_full / 3) ) {
+      //straight
+      commanded_speed = while_straight_speed;
+      commanded_steer = 0;
+
+    } else {
+      //right or search
+      commanded_speed = while_turning_speed;
+      commanded_steer = steer_radps;
+    }
+
+    srv.linear_x = commanded_speed;
+    srv.angular_x = commanded_steer;
+
+    client.call(srv);
+
 }
 
 int main(int argc, char** argv)
