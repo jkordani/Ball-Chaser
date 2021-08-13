@@ -20,17 +20,21 @@
   <arg name="roll" default="0"/>
   <arg name="pitch" default="0"/>
   <arg name="yaw" default="0"/>
-  
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
-        args="-urdf -param robot_description -model my_robot 
-              -x $(arg x) -y $(arg y) -z $(arg z)
-              -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
-              
+
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -param robot_description -model my_robot
+	      -x $(arg x) -y $(arg y) -z $(arg z)
+	      -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
   <!--launch rviz-->
   <node name="rviz" pkg="rviz" type="rviz" respawn="false"/>
 
   <!-- The drive_bot node -->
   <node name="drive_bot" type="drive_bot" pkg="ball_chaser" output="screen">
+  </node>
+
+  <!-- Ball search and plan node -->
+  <node name="process_image" type="process_image" pkg="ball_chaser" output="screen">
   </node>
 
   <!-- Launch other relevant files-->
