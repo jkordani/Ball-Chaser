@@ -29,6 +29,10 @@
   <!--launch rviz-->
   <node name="rviz" pkg="rviz" type="rviz" respawn="false"/>
 
+  <!-- The drive_bot node -->
+  <node name="drive_bot" type="drive_bot" pkg="ball_chaser" output="screen">
+  </node>
+
   <!-- Launch other relevant files-->
   <include file="$(find my_robot)/launch/robot_description.launch"/>
 
