@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "ball_chaser/DriveToTarget.h"
 #include <sensor_msgs/Image.h>
+#include <ros/console.h>
 
 // Define a global client that can request services
 ros::ServiceClient client;
@@ -21,15 +22,26 @@ void process_image_callback(const sensor_msgs::Image img)
     // Then, identify if this pixel falls in the left, mid, or right side of the image
     // Depending on the white ball position, call the drive_bot function and pass velocities to it
     // Request a stop when there's no white ball seen by the camera
-    unsigned int row_full = img.step * img.height;
-    unsigned int col_full = img.step * img.width;
+    unsigned int row_full = img.height;
+    unsigned int col_full = img.step;
 
     unsigned int col = 0;
 
+    // std::cout<< "Image Step " << img.step << std::endl;
+    // std::cout<< "Image Width " << img.width << std::endl;
+    // std::cout<< "Image height " << img.height << std::endl;
+
+    unsigned int max = 0;
+    
     for (unsigned int row = 0; row < row_full; ++row) {
       for ( ; col < col_full;  ++col) {
-	int idx =  row * row_full + col;
+	int idx = row * col_full + col;
+	if (img.data[idx] > max) {
+	  max = img.data[idx];
+	  std::cout<<"max is "<<max<<std::endl;
+	}
 	if (img.data[idx] == white_pixel) {
+	  std::cout<<"Found it\n";
 	  break;
 	}
       }
@@ -59,8 +71,8 @@ void process_image_callback(const sensor_msgs::Image img)
       commanded_steer = steer_radps;
     }
 
-    srv.linear_x = commanded_speed;
-    srv.angular_x = commanded_steer;
+    srv.request.linear_x = commanded_speed;
+    srv.request.angular_z = commanded_steer;
 
     client.call(srv);
 
