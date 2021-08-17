@@ -1,5 +1,7 @@
+
 #include "ros/ros.h"
 #include "ball_chaser/DriveToTarget.h"
+#include <iostream>
 #include <sensor_msgs/Image.h>
 #include <ros/console.h>
 
@@ -32,10 +34,10 @@ void process_image_callback(const sensor_msgs::Image img)
     // std::cout<< "Image height " << img.height << std::endl;
 
     unsigned int max = 0;
+    bool found = false;
     
-    for (unsigned int row = 0; row < row_full; ++row) {
-      col = 0;
-      for ( ; col < col_full;  ++col) {
+    for (unsigned int row = 0; !found && row < row_full; ++row) {
+      for (col = 0; col < col_full;  ++col) {
 	int idx = row * col_full + col;
 	if (img.data[idx] > max) {
 	  max = img.data[idx];
@@ -43,12 +45,16 @@ void process_image_callback(const sensor_msgs::Image img)
 	}
 	if (img.data[idx] == white_pixel) {
 	  std::cout<<"Found it\n";
+	  found = true;
 	  break;
 	}
       }
     }
 
-    std::cout<<"Col "<< col << " Section " << col / colfull << std::endl;
+    std::cout<<"Col "<< col
+	     << " one third "  << col_full / 3
+	     << " two thirds"  << 2*col_full / 3
+	     << std::endl;
 
     ball_chaser::DriveToTarget srv;
 
@@ -58,20 +64,23 @@ void process_image_callback(const sensor_msgs::Image img)
 
     float commanded_speed, commanded_steer = 0;
 
-    if ( (col / col_full) < (col_full / 3) ) {
+    if ( found && col < (col_full / 3) ) {
       //left
+      std::cout<<"LEFT"<<std::endl;
       commanded_speed = while_turning_speed;
-      commanded_steer = -steer_radps;
+      commanded_steer = steer_radps;
 
-    } else if ( (col / col_full) < ( 2 * col_full / 3) ) {
+    } else if ( found && col  < ( 2 * col_full / 3) ) {
       //straight
+      std::cout<<"STRAIGHT"<<std::endl;
       commanded_speed = while_straight_speed;
       commanded_steer = 0;
 
     } else {
       //right or search
+      std::cout<<"RIGHT OR SEARCH"<<std::endl;
       commanded_speed = while_turning_speed;
-      commanded_steer = steer_radps;
+      commanded_steer = -steer_radps;
     }
 
     srv.request.linear_x = commanded_speed;
