@@ -85,7 +85,7 @@ void process_image_callback(const sensor_msgs::Image img)
       commanded_speed = while_straight_speed;
       commanded_steer = 0;
 
-    } else if (douns && ( (2*colfull/3) < col < col_full)) {
+    } else if ( found && ( (2*col_full/3) < col < col_full)) {
       //right
       std::cout<<"RIGHT"<<std::endl;
       commanded_speed = while_turning_speed;
