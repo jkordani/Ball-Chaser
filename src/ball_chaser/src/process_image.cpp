@@ -48,6 +48,8 @@ void process_image_callback(const sensor_msgs::Image img)
       }
     }
 
+    std::cout<<"Col "<< col << " Section " << col / colfull << std::endl;
+
     ball_chaser::DriveToTarget srv;
 
     float while_straight_speed = 0.5;
@@ -56,7 +58,7 @@ void process_image_callback(const sensor_msgs::Image img)
 
     float commanded_speed, commanded_steer = 0;
 
-    if ( col / col_full < col_full / 3 ) {
+    if ( (col / col_full) < (col_full / 3) ) {
       //left
       commanded_speed = while_turning_speed;
       commanded_steer = -steer_radps;
