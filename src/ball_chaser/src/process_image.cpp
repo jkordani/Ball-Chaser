@@ -34,6 +34,7 @@ void process_image_callback(const sensor_msgs::Image img)
     unsigned int max = 0;
     
     for (unsigned int row = 0; row < row_full; ++row) {
+      col = 0;
       for ( ; col < col_full;  ++col) {
 	int idx = row * col_full + col;
 	if (img.data[idx] > max) {
