@@ -105,7 +105,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: topic/map
+      Topic: /map
       Unreliable: false
       Use Timestamp: false
       Value: true
@@ -122,7 +122,7 @@ Visualization Manager:
       Shaft Length: 0.230000004
       Shaft Radius: 0.00999999978
       Shape: Arrow (Flat)
-      Topic: topic/particlecloud
+      Topic: /particlecloud
       Unreliable: false
       Value: true
   Enabled: true
@@ -150,7 +150,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.27300072
+      Distance: 16.326725
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
