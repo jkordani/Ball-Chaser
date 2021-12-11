@@ -33,6 +33,10 @@
   <node name="drive_bot" type="drive_bot" pkg="ball_chaser" output="screen">
   </node>
 
+  <!-- Ball search and plan node -->
+  <node name="process_image" type="process_image" pkg="ball_chaser" output="screen">
+  </node>
+
   <!-- Launch other relevant files-->
   <include file="$(find my_robot)/launch/robot_description.launch"/>
 
