@@ -2,7 +2,7 @@
 <launch>
   
   <!-- Map Server -->
-  <arg name="map_file" default="$(find amcl)/maps/map.pgm"/>
+  <arg name="map_file" default="$(find project_3)/maps/map.pgm"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
   <!-- AMCL Node -->
@@ -24,11 +24,11 @@
     <param name="base_global_planner" value="navfn/NavfnROS" />
     <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
 
-    <rosparam file="$(find amcl)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find amcl)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find amcl)/config/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find amcl)/config/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find amcl)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find project_3)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find project_3)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find project_3)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find project_3)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find project_3)/config/base_local_planner_params.yaml" command="load" />
   </node>
 
 </launch>
