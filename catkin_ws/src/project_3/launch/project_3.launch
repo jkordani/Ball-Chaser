@@ -32,4 +32,8 @@
     <rosparam file="$(find project_3)/config/base_local_planner_params.yaml" command="load" />
   </node>
 
+    <!--launch rviz-->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find project_3)/project_3.rviz"/>
+
+
 </launch>
